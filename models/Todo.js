@@ -7,7 +7,7 @@ const todoSchema = new Schema({
     description: String,
     type: { type: String, default: 'list' }, // Possible values: 'list', 'task list', 'ordered list'
     items: [TodoListItemSchema],
-    dateCreated: Date,
+    dateCreated: { type: Date, default: Date.now },
     dateDue: { type: Date, default: null },
     _user: { type: Schema.Types.ObjectId, ref: 'User' }
 });
