@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import { Link, NavLink, withRouter } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
 import { Menu, Container } from 'semantic-ui-react';
 import SignedInMenu from './Menus/SignedInMenu';
 
 export class NavBar extends Component {
+	componentDidMount(state) {
+		this.props.fetchUser();
+	}
+
 	render() {
 		return (
 			<Menu inverted fixed="top">
@@ -13,11 +19,18 @@ export class NavBar extends Component {
 						ToDo List
 					</Menu.Item>
 					<Menu.Item as={NavLink} to="/todos" name="Todos" />
-					<SignedInMenu />
+					{this.props.auth &&
+					<SignedInMenu auth={this.props.auth} />}
 				</Container>
 			</Menu>
 		);
 	}
 }
 
-export default withRouter(NavBar);
+function mapStateToProps(state) {
+	return {
+		auth: state.auth
+	}
+};
+
+export default connect(mapStateToProps, actions)(NavBar);
