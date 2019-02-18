@@ -14,10 +14,12 @@ const LandingPage = () => {
 						<div className="content">ToDo List</div>
 					</h1>
 					<h2>Do whatever you want to do</h2>
-					<div className="ui huge white inverted button">
-						Get Started
-						<i className="right arrow icon" />
-					</div>
+                    <a href="/auth/google">
+                        <div className="ui huge white inverted button">
+                            Get Started
+                            <i className="right arrow icon" />
+                        </div>
+                    </a>
 				</div>
 			</div>
 			<div style={{ textAlign: 'center' }}>
