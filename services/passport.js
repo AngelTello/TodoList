@@ -26,13 +26,14 @@ passport.use(
 			proxy: true
 		},
 		async (accessToken, refreshToken, profile, done) => {
+			console.log(profile.emails[0].value);
 			const existingUser = await User.findOne({ googleId: profile.id });
 
 			if (existingUser) {
 				return done(null, existingUser);
 			}
 
-			const user = await new User({ googleId: profile.id, displayName: profile.displayName }).save();
+			const user = await new User({ googleId: profile.id, email: profile.emails[0].value, displayName: profile.displayName }).save();
 			done(null, user);
 		}
 	)

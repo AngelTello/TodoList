@@ -34,6 +34,7 @@ app.use(passport.session());
 // Import and execute returned function from authRoutes passing as parameter app
 require('./routes/authRoutes')(app);
 require('./routes/todoRoutes')(app);
+require('./routes/userRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
 	// Express will serve up production assets

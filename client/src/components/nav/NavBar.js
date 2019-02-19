@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchUser } from '../../actions';
 import { Menu, Container } from 'semantic-ui-react';
 import SignedInMenu from './Menus/SignedInMenu';
 
-export class NavBar extends Component {
-	componentDidMount(state) {
+class NavBar extends Component {
+	componentDidMount() {
 		this.props.fetchUser();
 	}
 
@@ -18,10 +18,9 @@ export class NavBar extends Component {
 						<img src="/assets/logo.png" alt="logo" />
 						ToDo List
 					</Menu.Item>
-					<Menu.Item as={NavLink} to="/users" name="Users" />
-					<Menu.Item as={NavLink} to="/todos" name="Todos" />
-					{this.props.auth &&
-					<SignedInMenu auth={this.props.auth} />}
+					<Menu.Item as={Link} to="/users" name="Users" />
+					<Menu.Item as={Link} to="/todos" name="Todos" />
+					{this.props.auth && <SignedInMenu auth={this.props.auth} />}
 				</Container>
 			</Menu>
 		);
@@ -31,9 +30,12 @@ export class NavBar extends Component {
 const mapStateToProps = state => {
 	return {
 		auth: state.auth
-	}
+	};
 };
 
 const actions = { fetchUser };
 
-export default connect(mapStateToProps, actions)(NavBar);
+export default connect(
+	mapStateToProps,
+	actions
+)(NavBar);
