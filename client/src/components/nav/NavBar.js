@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../../actions';
+import { fetchUser } from '../../actions';
 import { Menu, Container } from 'semantic-ui-react';
 import SignedInMenu from './Menus/SignedInMenu';
 
@@ -28,10 +28,12 @@ export class NavBar extends Component {
 	}
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
 	return {
 		auth: state.auth
 	}
 };
+
+const actions = { fetchUser };
 
 export default connect(mapStateToProps, actions)(NavBar);
