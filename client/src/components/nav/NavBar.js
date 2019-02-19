@@ -18,6 +18,7 @@ export class NavBar extends Component {
 						<img src="/assets/logo.png" alt="logo" />
 						ToDo List
 					</Menu.Item>
+					<Menu.Item as={NavLink} to="/users" name="Users" />
 					<Menu.Item as={NavLink} to="/todos" name="Todos" />
 					{this.props.auth &&
 					<SignedInMenu auth={this.props.auth} />}
