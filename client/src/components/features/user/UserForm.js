@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { withRouter } from 'react-router-dom';
 import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react';
-import { combineValidators, isRequired } from 'revalidate';
+import { combineValidators, isRequired, composeValidators, matchesPattern } from 'revalidate';
 
 // Common Form Controls
 import TextInput from '..//../common/form/TextInput';
 
 const validate = combineValidators({
-	email: isRequired({ message: 'The e-mail is required' }),
+	email: composeValidators(
+		isRequired({ message: 'The e-mail is required' }),
+		matchesPattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)({
+			message: 'The e-mail is not valid'
+		})
+	)(),
 	displayName: isRequired({ message: 'The display name is required' })
 });
 
