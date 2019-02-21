@@ -14,7 +14,7 @@ export const fetchAllUsers = () => async dispatch => {
 	dispatch({ type: FETCH_ALL_USERS, payload: res.data });
 };
 
-export const submitUser = values => async dispatch => {
+export const addUser = values => async dispatch => {
 	try {
 		await axios.post('/api/users', values);
 

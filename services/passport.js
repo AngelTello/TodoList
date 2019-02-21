@@ -26,18 +26,56 @@ passport.use(
 			proxy: true
 		},
 		async (accessToken, refreshToken, profile, done) => {
-			const existingUser = await User.findOne({ googleId: profile.id });
+			// Validate for Admin User E-mail
+			//
+			if (profile.emails[0].value == keys.adminUserEmail) {
+				const existingUser = await User.findOne({ googleId: profile.id });
+				
+				console.log('Admin user logged in!!!');
 
-			if (existingUser) {
-				return done(null, existingUser);
+				if (existingUser) {
+					return done(null, existingUser);
+				}
+
+				const user = await new User({
+					googleId: profile.id,
+					email: profile.emails[0].value,
+					displayName: profile.displayName,
+					dateActivated: Date.now()
+				}).save();
+
+				done(null, user);
+			} else {
+				// Check for e-mail in e-mails allowed list
+				const existingUser = await User.findOne({
+					email: profile.emails[0].value
+				});
+
+				// Is NOT a VALID USER
+				if (!existingUser) {
+					console.log(
+						'Is NOT a VALID USER:',
+						profile.emails[0].value
+					);
+
+					return done(null);
+				} else {
+					// Is a VALID USER but its not Activated yet
+					if (existingUser.dateActivated == null) {
+						existingUser.dateActivated = Date.now();
+						existingUser.displayName = profile.displayName;
+
+						existingUser.save();
+
+						console.log(
+							'Is a VALID USER just activated:',
+							profile.emails[0].value
+						);
+					}
+
+					done(null, existingUser);
+				}
 			}
-
-			const user = await new User({
-				googleId: profile.id,
-				email: profile.emails[0].value,
-				displayName: profile.displayName
-			}).save();
-			done(null, user);
 		}
 	)
 );

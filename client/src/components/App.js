@@ -3,14 +3,15 @@ import { Router, Route, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import CommonFormControlsDemo from './common/form/CommonFormControlsDemo';
-import HomePage from './HomePage';
+import StartPage from './StartPage';
 import NavBar from './nav/NavBar';
-import Dashboard from './Dashboard';
+import HomePage from './HomePage';
 import UserListContainer from './features/user/UserListContainer';
 import NotFound from './NotFound';
 import UserEdit from './features/user/UserEdit';
 import { userIsAuthenticatedRedir } from '../utils/authWrapper';
 import history from '../utils/history';
+import TodoList from './features/todo/TodoList';
 
 class App extends Component {
 	render() {
@@ -18,7 +19,7 @@ class App extends Component {
 			<div>
 				<Router history={history}>
 					<div>
-						<Route exact path="/" component={HomePage} />
+						<Route exact path="/" component={StartPage} />
 						<Route
 							path="/(.+)"
 							render={() => (
@@ -26,6 +27,7 @@ class App extends Component {
 									<NavBar />
 									<Container className="main">
 										<Switch>
+											<Route exact path="/home" component={HomePage} />
 											<Route
 												path="/users"
 												component={userIsAuthenticatedRedir(UserListContainer)}
@@ -38,7 +40,7 @@ class App extends Component {
 											/>
 											<Route
 												path="/todos"
-												component={userIsAuthenticatedRedir(Dashboard)}
+												component={userIsAuthenticatedRedir(TodoList)}
 											/>
 											<Route
 												path="/formControls"

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { submitUser } from '../../../actions';
+import { addUser } from '../../../actions';
 import UserForm from './UserForm';
 
 class UserEdit extends Component {
-	onSubmit = formValues => this.props.submitUser(formValues);
+	onSubmit = formValues => this.props.addUser(formValues);
 
 	render() {
 		return <UserForm onSubmit={this.onSubmit} />;
@@ -12,7 +12,7 @@ class UserEdit extends Component {
 }
 
 const actions = {
-	submitUser
+	addUser
 };
 
 export default connect(
