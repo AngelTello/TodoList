@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
+const requireLogin = require('../middlewares/requireLogin');
 
 const User = mongoose.model('users');
 
 module.exports = app => {
 	// GET all users
 	//
-	app.get('/api/users', async (req, res) => {
+	app.get('/api/users', requireLogin, async (req, res) => {
 		User.find({}).then(function(users) {
 			res.send(users);
 		});
@@ -13,7 +14,7 @@ module.exports = app => {
 
 	// POST add a new user
 	//
-	app.post('/api/users', async (req, res) => {
+	app.post('/api/users', requireLogin, async (req, res) => {
 		const { email, displayName } = req.body;
 
 		// First check if we already have a user with that e-mail
@@ -33,7 +34,7 @@ module.exports = app => {
 		res.send(user);
 	});
 
-	app.get('/api/users/:id', async (req, res) => {
+	app.get('/api/users/:id', requireLogin, async (req, res) => {
 		const { id } = req.params;
 
 		await User.deleteOne({ _id: id }, error => {
