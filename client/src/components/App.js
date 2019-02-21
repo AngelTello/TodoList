@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { Container } from 'semantic-ui-react';
 import CommonFormControlsDemo from './common/form/CommonFormControlsDemo';
@@ -7,14 +7,15 @@ import HomePage from './HomePage';
 import NavBar from './nav/NavBar';
 import Dashboard from './Dashboard';
 import UserListContainer from './features/user/UserListContainer';
-import UserForm from './features/user/UserForm';
 import NotFound from './NotFound';
+import UserEdit from './features/user/UserEdit';
+import history from '../utils/history';
 
 class App extends Component {
 	render() {
 		return (
 			<div>
-				<BrowserRouter>
+				<Router history={ history }>
 					<div>
 						<Route exact path="/" component={HomePage} />
 						<Route
@@ -25,7 +26,7 @@ class App extends Component {
 									<Container className="main">
 										<Switch>
 											<Route path="/users" component={UserListContainer} />
-											<Route path="/user/new" component={withRouter(UserForm)} />
+											<Route path="/user/new" component={withRouter(UserEdit)} />
 											<Route path="/todos" component={Dashboard} />
 											<Route
 												path="/formControls"
@@ -39,7 +40,7 @@ class App extends Component {
 							)}
 						/>
 					</div>
-				</BrowserRouter>
+				</Router>
 			</div>
 		);
 	}

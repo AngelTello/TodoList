@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const bodyParser = require('body-parser');
 
 // Import our google keys
 const keys = require('./config/keys');
@@ -21,6 +22,7 @@ const app = express();
 
 // Section used to Wireup our app Middlewares
 //
+app.use(bodyParser.json());
 app.use(
 	// Let's indicate express that we need to use cookies inside of our application
 	cookieSession({

@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
+import { withRouter } from 'react-router-dom';
 import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react';
-import {
-	combineValidators,
-	isRequired
-} from 'revalidate';
+import { combineValidators, isRequired } from 'revalidate';
 
 // Common Form Controls
 import TextInput from '..//../common/form/TextInput';
 
 const validate = combineValidators({
-    email: isRequired({ message: 'The e-mail is required' }),
-    displayName: isRequired({ message: 'The display name is required' })
-})
+	email: isRequired({ message: 'The e-mail is required' }),
+	displayName: isRequired({ message: 'The display name is required' })
+});
 
 class UserForm extends Component {
+	onSubmit = (formValues) => {
+        this.props.onSubmit(formValues);
+	};
+	
 	render() {
 		return (
 			<Grid>
@@ -22,7 +24,7 @@ class UserForm extends Component {
 					<Segment>
 						<Header sub color="teal" content="Add New User" />
 						<br />
-						<Form>
+						<Form onSubmit={ this.props.handleSubmit(this.onSubmit) }>
 							<Field
 								name="email"
 								type="text"
@@ -38,7 +40,9 @@ class UserForm extends Component {
 							<Button positive type="submit">
 								Submit
 							</Button>
-							<Button type="button">Cancel</Button>
+							<Button type="button" onClick={this.props.history.goBack}>
+								Cancel
+							</Button>
 						</Form>
 					</Segment>
 				</Grid.Column>
@@ -49,6 +53,6 @@ class UserForm extends Component {
 
 export default reduxForm({
 	form: 'userForm',
-    enableReinitialize: true,
-    validate
-})(UserForm);
+	enableReinitialize: true,
+	validate
+})(withRouter(UserForm));
