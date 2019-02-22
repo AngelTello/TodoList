@@ -12,7 +12,7 @@ module.exports = app => {
     // ... he will be redirected to our dashboard component '/surveys'
 	app.get(
 		'/auth/google/callback',
-		passport.authenticate('google'),
+		passport.authenticate('google', { failureRedirect: '/usernotvalid'}),
 		(req, res) => {
 			res.redirect('/home');
 		}

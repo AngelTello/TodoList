@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-	Button,
 	Container,
 	Divider,
 	Grid,
@@ -42,11 +41,6 @@ class HomePage extends Component {
 								/>
 							</Grid.Column>
 						</Grid.Row>
-						<Grid.Row>
-							<Grid.Column textAlign="center">
-								<Button size="huge">Check Them Out</Button>
-							</Grid.Column>
-						</Grid.Row>
 					</Grid>
 				</Segment>
 
@@ -85,9 +79,6 @@ class HomePage extends Component {
 							massive amounts of whitespace and generic content that can seem
 							massive, monolithic and worth your attention.
 						</p>
-						<Button as="a" size="large">
-							Read More
-						</Button>
 
 						<Divider
 							as="h4"
@@ -107,9 +98,6 @@ class HomePage extends Component {
 							of gene splicing and combinatory DNA research, but our bananas can
 							really dance.
 						</p>
-						<Button as="a" size="large">
-							I'm Still Quite Interested
-						</Button>
 					</Container>
 				</Segment>
 			</div>

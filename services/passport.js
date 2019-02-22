@@ -41,6 +41,7 @@ passport.use(
 					googleId: profile.id,
 					email: profile.emails[0].value,
 					displayName: profile.displayName,
+					isAdmin: true,
 					dateActivated: Date.now()
 				}).save();
 

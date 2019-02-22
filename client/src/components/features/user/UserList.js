@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchAllUsers, deleteUser } from '../../../actions';
-import { Segment, Grid, Header, Table, Button, Icon } from 'semantic-ui-react';
+import {
+	Segment,
+	Grid,
+	Header,
+	Table,
+	Button,
+	Icon,
+	Label
+} from 'semantic-ui-react';
 import { toastr } from 'react-redux-toastr';
 
 class UserList extends Component {
@@ -10,10 +18,13 @@ class UserList extends Component {
 	}
 
 	confirmUserDelete = (id, displayName) => {
-		return toastr.confirm(`Are you sure you want to delete this user: "${displayName}"?`, {
-			onOk: () => this.props.deleteUser(id)
-		});
-	}
+		return toastr.confirm(
+			`Are you sure you want to delete this user: "${displayName}"?`,
+			{
+				onOk: () => this.props.deleteUser(id)
+			}
+		);
+	};
 
 	render() {
 		return (
@@ -34,13 +45,23 @@ class UserList extends Component {
 								<Table.Row key={index}>
 									<Table.Cell>{user.displayName}</Table.Cell>
 									<Table.Cell>{user.email}</Table.Cell>
-									<Table.Cell textAlign="center">
-										<Button icon>
-											<Icon
-												name="delete"
-												onClick={() => this.confirmUserDelete(user._id, user.displayName)}
-											/>
-										</Button>
+									<Table.Cell textAlign={user.isAdmin ? 'left' : 'center'}>
+										{user.isAdmin && (
+											<Label color="orange" ribbon="right">
+												Admin
+											</Label>
+										)}
+
+										{!user.isAdmin && (
+											<Button icon>
+												<Icon
+													name="delete"
+													onClick={() =>
+														this.confirmUserDelete(user._id, user.displayName)
+													}
+												/>
+											</Button>
+										)}
 									</Table.Cell>
 								</Table.Row>
 							))}
