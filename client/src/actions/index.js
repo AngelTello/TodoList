@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_ALL_USERS, DELETE_USER } from '../actions/types';
+import {
+	FETCH_USER,
+	FETCH_ALL_USERS,
+	DELETE_USER,
+	MODAL_OPEN,
+	MODAL_CLOSE
+} from '../actions/types';
 import { toastr } from 'react-redux-toastr';
 import history from '../utils/history';
 
@@ -37,4 +43,21 @@ export const deleteUser = id => async dispatch => {
 	} catch (error) {
 		toastr.error('Oops', 'Something went wrong');
 	}
+};
+
+export const openModal = (modalType, modalProps) => {
+	return {
+		type: MODAL_OPEN,
+		payload: {
+			modalType,
+			modalProps
+		}
+	};
+};
+
+export const closeModal = () => {
+	return {
+		type: MODAL_CLOSE,
+		payload: null
+	};
 };

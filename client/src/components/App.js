@@ -12,11 +12,13 @@ import UserEdit from './features/user/UserEdit';
 import { userIsAuthenticatedRedir } from '../utils/authWrapper';
 import history from '../utils/history';
 import TodoList from './features/todo/TodoList';
+import ModalManager from './common/modals/ModalManager';
 
 class App extends Component {
 	render() {
 		return (
 			<div>
+				<ModalManager />
 				<Router history={history}>
 					<div>
 						<Route exact path="/" component={StartPage} />
