@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
+import ReduxToastr from 'react-redux-toastr';
 
 import 'semantic-ui-css/semantic.min.css';
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 import './index.css';
 import App from './components/App';
 import reducers from './reducers';
@@ -14,7 +16,14 @@ const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
 	<Provider store={store}>
-		<App />
+		<div>
+			<ReduxToastr
+				position="bottom-right"
+				transitionIn="fadeIn"
+				transitionOut="fadeOut"
+			/>
+			<App />
+		</div>
 	</Provider>,
 	document.getElementById('root')
 );
