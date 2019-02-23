@@ -14,7 +14,7 @@ const LandingPage = () => {
 						<div className="content">ToDo List</div>
 					</h1>
 					<h2>Do whatever you want to do</h2>
-                    <a href="/auth/google">
+                    <a href="/home">
                         <div className="ui huge white inverted button">
                             Get Started
                             <i className="right arrow icon" />
