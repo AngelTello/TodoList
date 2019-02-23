@@ -14,19 +14,31 @@ import * as serviceWorker from './serviceWorker';
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
-ReactDOM.render(
-	<Provider store={store}>
-		<div>
-			<ReduxToastr
-				position="bottom-right"
-				transitionIn="fadeIn"
-				transitionOut="fadeOut"
-			/>
-			<App />
-		</div>
-	</Provider>,
-	document.getElementById('root')
-);
+// Render the root component normally
+var rootEl = document.getElementById('root');
+
+const render = () => {
+	ReactDOM.render(
+		<Provider store={store}>
+			<div>
+				<ReduxToastr
+					position="bottom-right"
+					transitionIn="fadeIn"
+					transitionOut="fadeOut"
+				/>
+				<App />
+			</div>
+		</Provider>,
+		rootEl
+	);
+};
+
+render();
+
+// Hot Module Replacement API
+if (module.hot) {
+	module.hot.accept('./components/App', render);
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -47,7 +47,7 @@ class UserList extends Component {
 									<Table.Cell>{user.email}</Table.Cell>
 									<Table.Cell textAlign={user.isAdmin ? 'left' : 'center'}>
 										{user.isAdmin && (
-											<Label color="orange" ribbon="right">
+											<Label color="green" ribbon="right">
 												Admin
 											</Label>
 										)}

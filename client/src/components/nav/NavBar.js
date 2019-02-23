@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchUser } from '../../actions';
+import { Link } from 'react-router-dom';
 import { Menu, Container } from 'semantic-ui-react';
 import SignedInMenu from './Menus/SignedInMenu';
 
 class NavBar extends Component {
-
-	componentDidMount() {
-		this.props.fetchUser();
-	}
 
 	render() {
 		return (
@@ -34,9 +29,7 @@ const mapStateToProps = state => {
 	};
 };
 
-const actions = { fetchUser };
-
 export default connect(
 	mapStateToProps,
-	actions
+	null
 )(NavBar);
