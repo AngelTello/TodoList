@@ -19,7 +19,7 @@ class UserList extends Component {
 
 	confirmUserDelete = (id, displayName) => {
 		return toastr.confirm(
-			`Are you sure you want to delete this user: "${displayName}"?`,
+			`Are you sure you want to delete this user: ${displayName}?`,
 			{
 				onOk: () => this.props.deleteUser(id)
 			}
