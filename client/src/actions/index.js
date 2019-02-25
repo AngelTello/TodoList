@@ -45,6 +45,16 @@ export const deleteUser = id => async dispatch => {
 	}
 };
 
+export const addTodo = values => async dispatch => {
+	try {
+		console.log('Todo form values', values);
+	} catch (error) {
+		toastr.error('Oops', 'Problem while trying to add the user');
+	}
+};
+
+// Modal actions
+//
 export const openModal = (modalType, modalProps) => {
 	return {
 		type: MODAL_OPEN,

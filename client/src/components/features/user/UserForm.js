@@ -5,7 +5,7 @@ import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react';
 import { combineValidators, isRequired, composeValidators, matchesPattern } from 'revalidate';
 
 // Common Form Controls
-import TextInput from '..//../common/form/TextInput';
+import TextInput from '../../common/form/TextInput';
 
 const validate = combineValidators({
 	email: composeValidators(
@@ -43,7 +43,7 @@ class UserForm extends Component {
 								placeholder="Give your display name user"
 							/>
 							<Button positive type="submit">
-								Submit
+								Save
 							</Button>
 							<Button type="button" onClick={this.props.history.goBack}>
 								Cancel

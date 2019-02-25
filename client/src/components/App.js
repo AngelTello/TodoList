@@ -13,9 +13,10 @@ import NotFound from './NotFound';
 import UserEdit from './features/user/UserEdit';
 import { userIsAuthenticatedRedir } from '../utils/authWrapper';
 import history from '../utils/history';
-import TodoList from './features/todo/TodoList';
 import ModalManager from './common/modals/ModalManager';
 import UserNotValid from './features/user/UserNotValid';
+import TodoListContainer from './features/todo/TodoListContainer';
+import TodoEdit from './features/todo/TodoEdit';
 
 class App extends Component {
 	componentWillMount() {
@@ -37,12 +38,26 @@ class App extends Component {
 									<Container className="main">
 										<Switch>
 											<Route exact path="/home" component={HomePage} />
-											<Route path="/users" component={userIsAuthenticatedRedir(UserListContainer)} />
+											<Route
+												path="/users"
+												component={userIsAuthenticatedRedir(UserListContainer)}
+											/>
 											<Route
 												path="/user/new"
-												component={userIsAuthenticatedRedir(withRouter(UserEdit))}
+												component={userIsAuthenticatedRedir(
+													withRouter(UserEdit)
+												)}
 											/>
-											<Route path="/todos" component={userIsAuthenticatedRedir(TodoList)} />
+											<Route
+												path="/todos"
+												component={userIsAuthenticatedRedir(TodoListContainer)}
+											/>
+											<Route
+												path="/todo/new"
+												component={userIsAuthenticatedRedir(
+													withRouter(TodoEdit)
+												)}
+											/>
 											<Route
 												path="/formControls"
 												component={withRouter(CommonFormControlsDemo)}
