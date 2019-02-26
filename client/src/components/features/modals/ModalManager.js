@@ -1,9 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TestModal from './TestModal';
+import EditTodoListItemModal from './EditTodoListItemModal';
 
 const modalLookup = {
-	TestModal
+	TestModal,
+	EditTodoListItemModal
 };
 
 const mapStateToProps = state => ({

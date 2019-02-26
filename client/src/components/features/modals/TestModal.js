@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import { Modal } from 'semantic-ui-react';
 import { closeModal } from '../../../actions';
 
-const actions = {
-	closeModal
-};
-
 const TestModal = ({ closeModal }) => {
 	return (
 		<Modal closeIcon="close" open={true} onClose={closeModal}>
@@ -18,6 +14,10 @@ const TestModal = ({ closeModal }) => {
 			</Modal.Content>
 		</Modal>
 	);
+};
+
+const actions = {
+	closeModal
 };
 
 export default connect(

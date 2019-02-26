@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Segment, Grid, Menu, Button } from 'semantic-ui-react';
+import { Segment, Grid, Menu } from 'semantic-ui-react';
 import { addTodo } from '../../../actions';
 import TodoForm from './TodoForm';
 import TodoEditReview from './TodoEditReview';
 import TodoListItem from './TodoListItem';
 import TodoListItemOptions from './TodoListItemOptions';
-import { toastr } from 'react-redux-toastr';
 
 class TodoEdit extends Component {
 	state = {
@@ -29,7 +28,7 @@ class TodoEdit extends Component {
 			case 'review':
 				return <TodoEditReview />;
 			default:
-				return <TodoForm />;
+				return <TodoForm onSubmit={this.onSubmit} />;
 		}
 	}
 
@@ -79,22 +78,7 @@ class TodoEdit extends Component {
 
 						{this.renderContent()}
 						<br />
-						<Button positive type="submit">
-							Continue
-						</Button>
-						<Button
-							type="button"
-							onClick={() =>
-								toastr.confirm(
-									'Are you sure you want to cancel this process? ...your unsave changes will be lost',
-									{
-										onOk: () => this.props.history.push('/todos')
-									}
-								)
-							}
-						>
-							Cancel
-						</Button>
+						
 					</Segment>
 				</Grid.Column>
 				{this.renderContentOptions()}

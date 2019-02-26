@@ -13,7 +13,7 @@ import NotFound from './NotFound';
 import UserEdit from './features/user/UserEdit';
 import { userIsAuthenticatedRedir } from '../utils/authWrapper';
 import history from '../utils/history';
-import ModalManager from './common/modals/ModalManager';
+import ModalManager from './features/modals/ModalManager';
 import UserNotValid from './features/user/UserNotValid';
 import TodoListContainer from './features/todo/TodoListContainer';
 import TodoEdit from './features/todo/TodoEdit';

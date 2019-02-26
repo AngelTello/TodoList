@@ -1,18 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { openModal } from '../../../actions';
 
-const TodoListItemOptions = () => {
+const TodoListItemOptions = ({ openModal }) => {
 	return (
 		<Button
-			as={Link}
-			to="/todo/new"
 			color="teal"
 			fluid
 			basic
 			content="Add Task"
+			onClick={() => openModal('EditTodoListItemModal')}
 		/>
 	);
 };
 
-export default TodoListItemOptions;
+const actions = { openModal };
+
+export default connect(
+	null,
+	actions
+)(TodoListItemOptions);

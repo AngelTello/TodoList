@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form';
 import { withRouter } from 'react-router-dom';
-import { Form } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import {
 	combineValidators,
 	isRequired,
@@ -9,6 +9,7 @@ import {
 	hasLengthLessThan
 } from 'revalidate';
 import moment from 'moment';
+import { toastr } from 'react-redux-toastr';
 
 // Common Form Controls
 import TextInput from '../../common/form/TextInput';
@@ -55,6 +56,22 @@ class TodoForm extends Component {
 					showTimeSelect
 					placeholder="Due date"
 				/>
+				<Button positive type="submit">
+					Continue
+				</Button>
+				<Button
+					type="button"
+					onClick={() =>
+						toastr.confirm(
+							'Are you sure you want to cancel this process? ...your unsave changes will be lost',
+							{
+								onOk: () => this.props.history.push('/todos')
+							}
+						)
+					}
+				>
+					Cancel
+				</Button>
 			</Form>
 		);
 	}
