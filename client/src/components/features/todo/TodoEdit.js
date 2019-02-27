@@ -27,11 +27,24 @@ class TodoEdit extends Component {
 		this.setState({ activeContentOptionAction: action });
 
 	storeTodoFormValuesAndContinue = values => {
+		const todo = {...values, items: []};
+
 		// Store
-		this.setState({ todo: values });
+		this.setState({ todo });
 
 		// Continue
 		this.setActiveTabItem('tasks');
+	};
+
+	addTodoListItem = values => {
+		// Adding an element to and array
+		var items = [...this.state.todo.items, values];
+
+		// Opdating a property in the object
+		var todo = {...this.state.todo, items: items};
+
+		// Store
+		this.setState({ todo });
 	};
 
 	onCancelProcess = () => {
@@ -48,7 +61,13 @@ class TodoEdit extends Component {
 			case this.state.tabs[1].name:
 				return (
 					<TodoListItem
+						items={
+							this.state.todo && this.state.todo.items
+								? this.state.todo.items
+								: []
+						}
 						active={this.state.activeContentOptionAction}
+						onItemAdded={this.addTodoListItem}
 						onCancel={this.onCancelProcess}
 					/>
 				);
@@ -95,12 +114,14 @@ class TodoEdit extends Component {
 					<Segment>
 						<Menu pointing secondary fluid widths={3}>
 							{this.state.tabs.map((tab, index) => {
-								return <Menu.Item
-									key={index}
-									name={tab.name}
-									active={activeTabItem === tab.name}
-									onClick={this.handleTabItemClick}
-								/>;
+								return (
+									<Menu.Item
+										key={index}
+										name={tab.name}
+										active={activeTabItem === tab.name}
+										onClick={this.handleTabItemClick}
+									/>
+								);
 							})}
 						</Menu>
 

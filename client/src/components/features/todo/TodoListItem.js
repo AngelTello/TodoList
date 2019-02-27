@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addTodoListItem } from '../../../actions';
-import { Button } from 'semantic-ui-react';
+import { Grid, Table, Button, Icon } from 'semantic-ui-react';
 import TodoListItemForm from './TodoListItemForm';
 
 class TodoListItem extends Component {
-	onSubmit = formValues => this.props.addTodoListItem(formValues);
+
+	onSubmit = values => {
+		this.props.onItemAdded(values);
+	};
 
 	render() {
-		const { active } = this.props;
+		const { active, items } = this.props;
 
 		return (
 			<div>
@@ -16,6 +19,31 @@ class TodoListItem extends Component {
 					<TodoListItemForm onSubmit={this.onSubmit} />
 				)}
 
+				<Grid.Column width={12}>
+					<Table celled>
+						<Table.Header>
+							<Table.Row>
+								<Table.HeaderCell>Title</Table.HeaderCell>
+								<Table.HeaderCell>Description</Table.HeaderCell>
+								<Table.HeaderCell textAlign="center">Delete</Table.HeaderCell>
+							</Table.Row>
+						</Table.Header>
+						<Table.Body>
+							{items.map((item, index) => (
+								<Table.Row key={index}>
+									<Table.Cell>{item.title}</Table.Cell>
+									<Table.Cell>{item.description}</Table.Cell>
+									<Table.Cell textAlign="center">
+										<Button icon>
+											<Icon name="delete" />
+										</Button>
+									</Table.Cell>
+								</Table.Row>
+							))}
+						</Table.Body>
+					</Table>
+				</Grid.Column>
+				<br />
 				<Button positive type="submit">
 					Continue
 				</Button>
