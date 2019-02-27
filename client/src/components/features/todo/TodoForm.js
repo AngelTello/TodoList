@@ -9,7 +9,6 @@ import {
 	hasLengthLessThan
 } from 'revalidate';
 import moment from 'moment';
-import { toastr } from 'react-redux-toastr';
 
 // Common Form Controls
 import TextInput from '../../common/form/TextInput';
@@ -43,7 +42,7 @@ class TodoForm extends Component {
 					name="description"
 					type="text"
 					component={TextInput}
-					placeholder="Show description of what you will accomplish and how (optional)"
+					placeholder="Description of what you will accomplish and how (optional)"
 				/>
 				<Field
 					name="dateDue"
@@ -59,17 +58,7 @@ class TodoForm extends Component {
 				<Button positive type="submit">
 					Continue
 				</Button>
-				<Button
-					type="button"
-					onClick={() =>
-						toastr.confirm(
-							'Are you sure you want to cancel this process? ...your unsave changes will be lost',
-							{
-								onOk: () => this.props.history.push('/todos')
-							}
-						)
-					}
-				>
+				<Button type="button" onClick={this.props.onCancel}>
 					Cancel
 				</Button>
 			</Form>

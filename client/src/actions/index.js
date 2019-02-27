@@ -53,6 +53,14 @@ export const addTodo = values => async dispatch => {
 	}
 };
 
+export const addTodoListItem = values => async dispatch => {
+	try {
+		console.log('TodoListItem form values', values);
+	} catch (error) {
+		toastr.error('Oops', 'Problem while trying to add the user');
+	}
+};
+
 // Modal actions
 //
 export const openModal = (modalType, modalProps) => {

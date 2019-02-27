@@ -5,30 +5,47 @@ import { addTodo } from '../../../actions';
 import TodoForm from './TodoForm';
 import TodoEditReview from './TodoEditReview';
 import TodoListItem from './TodoListItem';
-import TodoListItemOptions from './TodoListItemOptions';
+import TodoListItemSidebarOptions from './TodoListItemSidebarOptions';
+import { toastr } from 'react-redux-toastr';
 
 class TodoEdit extends Component {
 	state = {
 		activeItem: 'todo',
-		todoEdit: null
+		activeContentOptionAction: null,
+		todo: null
 	};
 
 	handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
+	handleContentOptionAction = action =>
+		this.setState({ activeContentOptionAction: action });
+
 	onSubmit = formValues => this.props.addTodo(formValues);
+
+	onCancelProcess = () => {
+		toastr.confirm(
+			'Are you sure you want to cancel this process? ...your unsave changes will be lost',
+			{
+				onOk: () => this.props.history.push('/todos')
+			}
+		);
+	};
 
 	renderContent() {
 		switch (this.state.activeItem) {
 			case 'tasks':
 				return (
-					<div>
-						<TodoListItem />
-					</div>
+					<TodoListItem
+						active={this.state.activeContentOptionAction}
+						onCancel={this.onCancelProcess}
+					/>
 				);
 			case 'review':
 				return <TodoEditReview />;
 			default:
-				return <TodoForm onSubmit={this.onSubmit} />;
+				return (
+					<TodoForm onSubmit={this.onSubmit} onCancel={this.onCancelProcess} />
+				);
 		}
 	}
 
@@ -38,7 +55,10 @@ class TodoEdit extends Component {
 				return (
 					<Grid.Column width={4}>
 						<Segment>
-							<TodoListItemOptions />
+							<TodoListItemSidebarOptions
+								onAction={action => this.handleContentOptionAction(action)}
+								active={this.state.activeContentOptionAction}
+							/>
 						</Segment>
 					</Grid.Column>
 				);
@@ -78,7 +98,6 @@ class TodoEdit extends Component {
 
 						{this.renderContent()}
 						<br />
-						
 					</Segment>
 				</Grid.Column>
 				{this.renderContentOptions()}
