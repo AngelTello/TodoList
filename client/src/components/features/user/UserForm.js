@@ -23,6 +23,8 @@ class UserForm extends Component {
 	};
 	
 	render() {
+		const { invalid, submitting } = this.props;
+		
 		return (
 			<Grid>
 				<Grid.Column width={10}>
@@ -42,7 +44,7 @@ class UserForm extends Component {
 								component={TextInput}
 								placeholder="Give your display name user"
 							/>
-							<Button positive type="submit">
+							<Button positive type="submit" disabled={invalid || submitting}>
 								Save
 							</Button>
 							<Button type="button" onClick={this.props.history.goBack}>

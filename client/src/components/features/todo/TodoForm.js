@@ -26,10 +26,15 @@ const validate = combineValidators({
 
 class TodoForm extends Component {
 	onSubmit = formValues => {
-		this.props.onSubmit(formValues);
+		this.props.onSubmit({
+			...formValues,
+			dateDue: formValues.dateDue.toDate()
+		});
 	};
 
 	render() {
+		const { invalid, submitting } = this.props;
+
 		return (
 			<Form onSubmit={this.props.handleSubmit(this.onSubmit)}>
 				<Field
@@ -55,7 +60,7 @@ class TodoForm extends Component {
 					showTimeSelect
 					placeholder="Due date"
 				/>
-				<Button positive type="submit">
+				<Button positive type="submit" disabled={invalid || submitting}>
 					Continue
 				</Button>
 				<Button type="button" onClick={this.props.onCancel}>

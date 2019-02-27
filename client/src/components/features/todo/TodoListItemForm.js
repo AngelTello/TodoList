@@ -27,6 +27,8 @@ class TodoListItemForm extends Component {
 	};
 
 	render() {
+		const { invalid, submitting } = this.props;
+
 		return (
 			<div>
 				<Form onSubmit={this.props.handleSubmit(this.onSubmit)}>
@@ -42,7 +44,7 @@ class TodoListItemForm extends Component {
 						component={TextInput}
 						placeholder="Description of what you will accomplish and how (optional)"
 					/>
-					<Button positive type="submit">
+					<Button positive type="submit" disabled={invalid || submitting}>
 						Add
 					</Button>
 				</Form>

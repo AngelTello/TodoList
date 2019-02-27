@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Segment, Grid, Menu } from 'semantic-ui-react';
-import { addTodo } from '../../../actions';
 import TodoForm from './TodoForm';
 import TodoEditReview from './TodoEditReview';
 import TodoListItem from './TodoListItem';
@@ -10,17 +8,31 @@ import { toastr } from 'react-redux-toastr';
 
 class TodoEdit extends Component {
 	state = {
-		activeItem: 'todo',
-		activeContentOptionAction: null,
-		todo: null
+		todo: null,
+		tabs: [
+			{ name: 'todo', active: true, disabled: false },
+			{ name: 'tasks', active: false, disabled: true },
+			{ name: 'review', active: false, disabled: true }
+		],
+		activeTabItem: 'todo',
+		activeContentOptionAction: null
 	};
 
-	handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+	handleTabItemClick = (e, { name }) => this.setActiveTabItem(name);
+	setActiveTabItem = name => {
+		this.setState({ activeTabItem: name });
+	};
 
 	handleContentOptionAction = action =>
 		this.setState({ activeContentOptionAction: action });
 
-	onSubmit = formValues => this.props.addTodo(formValues);
+	storeTodoFormValuesAndContinue = values => {
+		// Store
+		this.setState({ todo: values });
+
+		// Continue
+		this.setActiveTabItem('tasks');
+	};
 
 	onCancelProcess = () => {
 		toastr.confirm(
@@ -32,26 +44,29 @@ class TodoEdit extends Component {
 	};
 
 	renderContent() {
-		switch (this.state.activeItem) {
-			case 'tasks':
+		switch (this.state.activeTabItem) {
+			case this.state.tabs[1].name:
 				return (
 					<TodoListItem
 						active={this.state.activeContentOptionAction}
 						onCancel={this.onCancelProcess}
 					/>
 				);
-			case 'review':
+			case this.state.tabs[2].name:
 				return <TodoEditReview />;
 			default:
 				return (
-					<TodoForm onSubmit={this.onSubmit} onCancel={this.onCancelProcess} />
+					<TodoForm
+						onSubmit={this.storeTodoFormValuesAndContinue}
+						onCancel={this.onCancelProcess}
+					/>
 				);
 		}
 	}
 
 	renderContentOptions() {
-		switch (this.state.activeItem) {
-			case 'tasks':
+		switch (this.state.activeTabItem) {
+			case this.state.tabs[1].name:
 				return (
 					<Grid.Column width={4}>
 						<Segment>
@@ -72,28 +87,21 @@ class TodoEdit extends Component {
 	}
 
 	render() {
-		const { activeItem } = this.state;
+		const { activeTabItem } = this.state;
 
 		return (
 			<Grid>
 				<Grid.Column width={12}>
 					<Segment>
 						<Menu pointing secondary fluid widths={3}>
-							<Menu.Item
-								name="todo"
-								active={activeItem === 'todo'}
-								onClick={this.handleItemClick}
-							/>
-							<Menu.Item
-								name="tasks"
-								active={activeItem === 'tasks'}
-								onClick={this.handleItemClick}
-							/>
-							<Menu.Item
-								name="review"
-								active={activeItem === 'review'}
-								onClick={this.handleItemClick}
-							/>
+							{this.state.tabs.map((tab, index) => {
+								return <Menu.Item
+									key={index}
+									name={tab.name}
+									active={activeTabItem === tab.name}
+									onClick={this.handleTabItemClick}
+								/>;
+							})}
 						</Menu>
 
 						{this.renderContent()}
@@ -106,11 +114,4 @@ class TodoEdit extends Component {
 	}
 }
 
-const actions = {
-	addTodo
-};
-
-export default connect(
-	null,
-	actions
-)(TodoEdit);
+export default TodoEdit;
