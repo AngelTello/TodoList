@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { reduxForm } from 'redux-form';
 import { Segment, Grid, Menu } from 'semantic-ui-react';
 import TodoForm from './TodoForm';
 import TodoEditReview from './TodoEditReview';
@@ -175,4 +176,6 @@ class TodoEdit extends Component {
 	}
 }
 
-export default TodoEdit;
+export default reduxForm({
+	form: 'todoForm'
+})(TodoEdit);
