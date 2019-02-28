@@ -44,7 +44,7 @@ class TodoListItem extends Component {
 					</Table>
 				</Grid.Column>
 				<br />
-				<Button positive type="submit">
+				<Button positive type="submit" onClick={this.props.onContinue}>
 					Continue
 				</Button>
 				<Button type="button" onClick={this.props.onCancel}>

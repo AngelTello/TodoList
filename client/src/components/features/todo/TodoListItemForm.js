@@ -24,6 +24,8 @@ const validate = combineValidators({
 class TodoListItemForm extends Component {
 	onSubmit = formValues => {
 		this.props.onSubmit(formValues);
+
+		this.props.reset();
 	};
 
 	render() {

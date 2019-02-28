@@ -28,7 +28,7 @@ class TodoForm extends Component {
 	onSubmit = formValues => {
 		this.props.onSubmit({
 			...formValues,
-			dateDue: formValues.dateDue.toDate()
+			dateDue: formValues.dateDue.toJSON()
 		});
 	};
 
@@ -74,5 +74,6 @@ class TodoForm extends Component {
 export default reduxForm({
 	form: 'todoForm',
 	enableReinitialize: true,
+	destroyOnUnmount: false,
 	validate
 })(withRouter(TodoForm));

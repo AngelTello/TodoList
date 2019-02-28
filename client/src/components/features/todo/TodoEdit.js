@@ -22,18 +22,33 @@ class TodoEdit extends Component {
 	setActiveTabItem = name => {
 		this.setState({ activeTabItem: name });
 	};
+	enableTabItem = name => {
+		var tabs = this.state.tabs;
+		const tab = tabs.find(tab => tab.name === name && tab.disabled);
+
+		if (tab) {
+			// Enable
+			tab.disabled = false;
+
+			// Store
+			this.setState({ tabs });
+		}
+	};
 
 	handleContentOptionAction = action =>
 		this.setState({ activeContentOptionAction: action });
 
 	storeTodoFormValuesAndContinue = values => {
-		const todo = {...values, items: []};
+		const todo = { ...values, items: [] };
 
 		// Store
 		this.setState({ todo });
 
 		// Continue
-		this.setActiveTabItem('tasks');
+		const nextTabItem = 'tasks';
+
+		this.enableTabItem(nextTabItem);
+		this.setActiveTabItem(nextTabItem);
 	};
 
 	addTodoListItem = values => {
@@ -41,10 +56,27 @@ class TodoEdit extends Component {
 		var items = [...this.state.todo.items, values];
 
 		// Opdating a property in the object
-		var todo = {...this.state.todo, items: items};
+		var todo = { ...this.state.todo, items: items };
 
 		// Store
 		this.setState({ todo });
+	};
+
+	onContinue = currentActiveTab => {
+		if (currentActiveTab === this.state.tabs[2].name) {
+			// This is the "review" so once the user clicks continue we will post to our server side
+			this.submitTodo();
+		} else {
+			// Continue
+			const nextTabItem = 'review';
+
+			this.enableTabItem(nextTabItem);
+			this.setActiveTabItem(nextTabItem);
+		}
+	};
+
+	submitTodo = () => {
+		console.log(this.state.todo);
 	};
 
 	onCancelProcess = () => {
@@ -68,11 +100,18 @@ class TodoEdit extends Component {
 						}
 						active={this.state.activeContentOptionAction}
 						onItemAdded={this.addTodoListItem}
+						onContinue={() => this.onContinue(this.state.activeTabItem)}
 						onCancel={this.onCancelProcess}
 					/>
 				);
 			case this.state.tabs[2].name:
-				return <TodoEditReview />;
+				return (
+					<TodoEditReview
+						todo={this.state.todo}
+						onContinue={() => this.onContinue(this.state.activeTabItem)}
+						onCancel={this.onCancelProcess}
+					/>
+				);
 			default:
 				return (
 					<TodoForm
@@ -119,6 +158,7 @@ class TodoEdit extends Component {
 										key={index}
 										name={tab.name}
 										active={activeTabItem === tab.name}
+										disabled={tab.disabled}
 										onClick={this.handleTabItemClick}
 									/>
 								);
