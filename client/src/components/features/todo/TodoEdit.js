@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { Segment, Grid, Menu } from 'semantic-ui-react';
 import TodoForm from './TodoForm';
@@ -6,6 +7,7 @@ import TodoEditReview from './TodoEditReview';
 import TodoListItem from './TodoListItem';
 import TodoListItemSidebarOptions from './TodoListItemSidebarOptions';
 import { toastr } from 'react-redux-toastr';
+import { addTodo } from '../../../actions';
 
 class TodoEdit extends Component {
 	state = {
@@ -77,7 +79,9 @@ class TodoEdit extends Component {
 	};
 
 	submitTodo = () => {
-		console.log(this.state.todo);
+		//console.log(this.state.todo);
+
+		this.props.addTodo(this.state.todo);
 	};
 
 	onCancelProcess = () => {
@@ -176,6 +180,15 @@ class TodoEdit extends Component {
 	}
 }
 
-export default reduxForm({
-	form: 'todoForm'
-})(TodoEdit);
+const actions = {
+	addTodo
+};
+
+export default connect(
+	null,
+	actions
+)(
+	reduxForm({
+		form: 'todoForm'
+	})(TodoEdit)
+);

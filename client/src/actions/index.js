@@ -3,6 +3,8 @@ import {
 	FETCH_USER,
 	FETCH_ALL_USERS,
 	DELETE_USER,
+	FETCH_ALL_TODOS,
+	DELETE_TODO,
 	MODAL_OPEN,
 	MODAL_CLOSE
 } from '../actions/types';
@@ -45,19 +47,33 @@ export const deleteUser = id => async dispatch => {
 	}
 };
 
+export const fetchAllTodos = () => async dispatch => {
+	const res = await axios.get('/api/todos');
+
+	dispatch({ type: FETCH_ALL_TODOS, payload: res.data });
+};
+
 export const addTodo = values => async dispatch => {
 	try {
-		console.log('Todo form values', values);
+		await axios.post('/api/todos', values);
+
+		toastr.success('Success!', 'ToDo added');
+
+		history.push('/todos'); // Implementing programmatic navigation
 	} catch (error) {
 		toastr.error('Oops', 'Problem while trying to add the user');
 	}
 };
 
-export const addTodoListItem = values => async dispatch => {
+export const deleteTodo = id => async dispatch => {
 	try {
-		console.log('TodoListItem form values', values);
+		const res = await axios.get(`/api/todos/${id}`);
+
+		toastr.success('Success!', 'ToDo deleted');
+
+		dispatch({ type: DELETE_TODO, payload: res.data });
 	} catch (error) {
-		toastr.error('Oops', 'Problem while trying to add the user');
+		toastr.error('Oops', 'Something went wrong');
 	}
 };
 

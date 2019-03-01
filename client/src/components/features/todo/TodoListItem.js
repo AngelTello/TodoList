@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { addTodoListItem } from '../../../actions';
 import { Grid, Table, Button, Icon } from 'semantic-ui-react';
 import TodoListItemForm from './TodoListItemForm';
 
 class TodoListItem extends Component {
-
 	onSubmit = values => {
 		this.props.onItemAdded(values);
 	};
@@ -55,11 +52,4 @@ class TodoListItem extends Component {
 	}
 }
 
-const actions = {
-	addTodoListItem
-};
-
-export default connect(
-	null,
-	actions
-)(TodoListItem);
+export default TodoListItem;

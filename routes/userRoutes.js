@@ -34,6 +34,8 @@ module.exports = app => {
 		res.send(user);
 	});
 
+	// GET deletes a user
+	//
 	app.get('/api/users/:id', requireLogin, async (req, res) => {
 		const { id } = req.params;
 
