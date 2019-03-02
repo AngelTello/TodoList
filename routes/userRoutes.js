@@ -7,7 +7,9 @@ module.exports = app => {
 	// GET all users
 	//
 	app.get('/api/users', requireLogin, async (req, res) => {
-		User.find({}, null, {sort: {_id: 1, displayName: 1}}).then(function(users) {
+		await User.find({}, '_id displayName email isAdmin', {
+			sort: { _id: 1, displayName: 1 }
+		}).then(function(users) {
 			res.send(users);
 		});
 	});
