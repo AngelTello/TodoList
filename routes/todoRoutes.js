@@ -7,14 +7,24 @@ module.exports = app => {
 	// GET all todos
 	//
 	app.get('/api/todos', requireLogin, async (req, res) => {
-		await Todo.find({}, '_id title description dateDue', {
+		await Todo.find({ _user: req.user.id }, '_id title description dateDue', {
 			sort: { dateDue: 1 }
 		}).then(function(todos) {
 			res.send(todos);
 		});
 	});
 
-	// POST todo
+	// GET todo
+	//
+	app.get('/api/todos/:id', requireLogin, async (req, res) => {
+		const { id } = req.params;
+
+		const todo = await Todo.find({ _id: id, _user: req.user.id });
+
+		res.send(todo);
+	});
+
+	// POST Add todo
 	//
 	app.post('/api/todos', requireLogin, async (req, res) => {
 		const todo = await new Todo({
@@ -25,9 +35,34 @@ module.exports = app => {
 		res.send(todo);
 	});
 
+	// GET Toogle Task (listItem)
+	//
+	app.get('/api/todos/:id/:taskId/:status', async (req, res) => {
+		const { id, taskId, status } = req.params;
+
+		await Todo.updateOne(
+			{
+				_id: id,
+				_user: req.user.id,
+				items: {
+					$elemMatch: { _id: taskId }
+				}
+			},
+			{
+				$set: {
+					'items.$.dateDone': (status === 'true') ? new Date() : null
+				}
+			}
+		).exec();
+
+		const todo = await Todo.find({ _id: id, _user: req.user.id });
+
+		res.send(todo);
+	});
+
 	// GET deletes a todo
 	//
-	app.get('/api/todos/:id', requireLogin, async (req, res) => {
+	app.get('/api/todos/:id/delete', requireLogin, async (req, res) => {
 		const { id } = req.params;
 
 		await Todo.deleteOne({ _id: id, _user: req.user.id }, error => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchAllTodos, deleteTodo } from '../../../actions';
 import { Grid, Segment, Header, Table, Button, Icon } from 'semantic-ui-react';
 import { toastr } from 'react-redux-toastr';
@@ -38,7 +39,9 @@ class TodoList extends Component {
 							{this.props.todos.map((todo, index) => {
 								return (
 									<Table.Row key={index}>
-										<Table.Cell>{todo.title}</Table.Cell>
+										<Table.Cell>
+											<Link to={`/todo/${todo._id}`}>{todo.title}</Link>
+										</Table.Cell>
 										<Table.Cell>{todo.description}</Table.Cell>
 										<Table.Cell>
 											{format(todo.dateDue, 'dddd Do MMM')} at{' '}

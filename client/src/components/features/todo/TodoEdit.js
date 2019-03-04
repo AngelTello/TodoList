@@ -79,8 +79,6 @@ class TodoEdit extends Component {
 	};
 
 	submitTodo = () => {
-		//console.log(this.state.todo);
-
 		this.props.addTodo(this.state.todo);
 	};
 

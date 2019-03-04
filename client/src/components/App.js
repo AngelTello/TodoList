@@ -17,6 +17,7 @@ import ModalManager from './features/modals/ModalManager';
 import UserNotValid from './features/user/UserNotValid';
 import TodoListContainer from './features/todo/TodoListContainer';
 import TodoEdit from './features/todo/TodoEdit';
+import TodoDetail from './features/todo/TodoDetail';
 
 class App extends Component {
 	componentWillMount() {
@@ -57,6 +58,10 @@ class App extends Component {
 												component={userIsAuthenticatedRedir(
 													withRouter(TodoEdit)
 												)}
+											/>
+											<Route
+												path="/todo/:id"
+												component={userIsAuthenticatedRedir(TodoDetail)}
 											/>
 											<Route
 												path="/formControls"

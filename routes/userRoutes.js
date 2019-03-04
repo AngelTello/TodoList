@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 
 const User = mongoose.model('users');
+const Todo = mongoose.model('todos');
 
 module.exports = app => {
 	// GET all users
@@ -38,17 +39,28 @@ module.exports = app => {
 
 	// GET deletes a user
 	//
-	app.get('/api/users/:id', requireLogin, async (req, res) => {
+	app.get('/api/users/:id/delete', requireLogin, async (req, res) => {
 		const { id } = req.params;
 
-		await User.deleteOne({ _id: id }, error => {
+		// Deletes Todo's User
+		await Todo.deleteMany({ _user: id }, error => {
 			if (error) {
 				res.status(400).send({
-					message: 'User not found'
+					message: "Problem trying to delete user todo's"
 				});
 			}
-
-			res.send(id);
 		});
+
+		// Deleted User
+		await User.deleteOne({ _id: id }),
+			error => {
+				if (error) {
+					res.status(400).send({
+						message: 'Problem trying to delete user'
+					});
+				}
+			};
+
+		res.send(id);
 	});
 };
