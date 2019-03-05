@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
+const Joi = require('joi');
 
 const User = mongoose.model('users');
 const Todo = mongoose.model('todos');
@@ -18,6 +19,21 @@ module.exports = app => {
 	// POST add a new user
 	//
 	app.post('/api/users', requireLogin, async (req, res) => {
+
+		const schema = {
+			email: Joi.string().email({ minDomainAtoms: 2 }).required(),
+			displayName: Joi.string().max(100).required()
+		};
+
+		// Return result.
+		const result = Joi.validate(req.body, schema);
+
+		if (result.error) {
+			// 400 Bad Request
+			res.status(400).send(result.error.details[0].message);
+			return;
+		}
+
 		const { email, displayName } = req.body;
 
 		// First check if we already have a user with that e-mail
@@ -27,6 +43,7 @@ module.exports = app => {
 			res.status(400).send({
 				message: 'User e-mail already exists'
 			});
+			return;
 		}
 
 		const user = await new User({

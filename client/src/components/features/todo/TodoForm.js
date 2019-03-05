@@ -21,6 +21,11 @@ const validate = combineValidators({
 			message: 'Title needs to be at most 50 characters long'
 		})
 	)(),
+	description: composeValidators(
+		hasLengthLessThan(255)({
+			message: 'Description needs to be at most 255 characters long'
+		})
+	)(),
 	dateDue: isRequired('date')
 });
 

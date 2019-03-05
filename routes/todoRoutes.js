@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
+const Joi = require('joi');
 
 const Todo = mongoose.model('todos');
 
@@ -27,6 +28,28 @@ module.exports = app => {
 	// POST Add todo
 	//
 	app.post('/api/todos', requireLogin, async (req, res) => {
+
+		const todoListItem = {
+			title: Joi.string().max(50).required(),
+			description: Joi.string().max(255)
+		};
+
+		const todoSchema = {
+			title: Joi.string().max(50).required(),
+			description: Joi.string().max(255),
+			items: Joi.array().items(todoListItem).unique(),
+			dateDue: Joi.date().required()
+		};
+
+		// Return result.
+		const result = Joi.validate(req.body, todoSchema);
+
+		if (result.error) {
+			// 400 Bad Request
+			res.status(400).send(result.error.details[0].message);
+			return;
+		}
+
 		const todo = await new Todo({
 			...req.body,
 			_user: req.user.id

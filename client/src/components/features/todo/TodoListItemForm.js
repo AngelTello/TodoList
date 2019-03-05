@@ -16,9 +16,14 @@ const validate = combineValidators({
 	title: composeValidators(
 		isRequired({ message: 'Please enter a task name' }),
 		hasLengthLessThan(50)({
-			message: 'Description needs to be at most 50 characters long'
+			message: 'Task name needs to be at most 50 characters long'
 		})
-	)()
+	)(),
+	description: composeValidators(
+		hasLengthLessThan(255)({
+			message: 'Description needs to be at most 255 characters long'
+		})
+	)(),
 });
 
 class TodoListItemForm extends Component {
