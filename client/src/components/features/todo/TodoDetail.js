@@ -99,7 +99,7 @@ class TodoDetail extends Component {
 
 const mapStateToProps = state => {
 	return {
-		todo: state.todos[0]
+		todo: state.todos
 	};
 };
 

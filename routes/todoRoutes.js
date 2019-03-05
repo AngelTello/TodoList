@@ -19,7 +19,7 @@ module.exports = app => {
 	app.get('/api/todos/:id', requireLogin, async (req, res) => {
 		const { id } = req.params;
 
-		const todo = await Todo.find({ _id: id, _user: req.user.id });
+		const todo = await Todo.findOne({ _id: id, _user: req.user.id });
 
 		res.send(todo);
 	});
@@ -40,7 +40,7 @@ module.exports = app => {
 	app.get('/api/todos/:id/:taskId/:status', async (req, res) => {
 		const { id, taskId, status } = req.params;
 
-		await Todo.updateOne(
+		await Todo.findOneAndUpdate(
 			{
 				_id: id,
 				_user: req.user.id,
@@ -50,14 +50,20 @@ module.exports = app => {
 			},
 			{
 				$set: {
-					'items.$.dateDone': (status === 'true') ? new Date() : null
+					'items.$.dateDone': status === 'true' ? new Date() : null
 				}
+			},
+			{ new: true }, // new: bool - if true, return the modified document rather than the original. defaults to false
+			(error, todo) => {
+				if (error) {
+					res.status(400).send({
+						message: 'ToDo not found'
+					});
+				}
+
+				res.send(todo);
 			}
-		).exec();
-
-		const todo = await Todo.find({ _id: id, _user: req.user.id });
-
-		res.send(todo);
+		);
 	});
 
 	// GET deletes a todo
