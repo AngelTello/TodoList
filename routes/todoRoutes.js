@@ -28,21 +28,9 @@ module.exports = app => {
 	// POST Add todo
 	//
 	app.post('/api/todos', requireLogin, async (req, res) => {
-
-		const todoListItem = {
-			title: Joi.string().max(50).required(),
-			description: Joi.string().max(255)
-		};
-
-		const todoSchema = {
-			title: Joi.string().max(50).required(),
-			description: Joi.string().max(255),
-			items: Joi.array().items(todoListItem).unique(),
-			dateDue: Joi.date().required()
-		};
-
-		// Return result.
-		const result = Joi.validate(req.body, todoSchema);
+		
+		// Validation
+		const { error } = validateTodo(req.body);
 
 		if (result.error) {
 			// 400 Bad Request
@@ -104,4 +92,21 @@ module.exports = app => {
 			res.send(id);
 		});
 	});
+
+	function validateTodo(todo) {
+		const todoListItem = {
+			title: Joi.string().max(50).required(),
+			description: Joi.string().max(255)
+		};
+
+		const todoSchema = {
+			title: Joi.string().max(50).required(),
+			description: Joi.string().max(255),
+			items: Joi.array().items(todoListItem).unique(),
+			dateDue: Joi.date().required()
+		};
+
+		// Return result.
+		return Joi.validate(todo, todoSchema);
+	}
 };

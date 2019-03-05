@@ -20,17 +20,12 @@ module.exports = app => {
 	//
 	app.post('/api/users', requireLogin, async (req, res) => {
 
-		const schema = {
-			email: Joi.string().email({ minDomainAtoms: 2 }).required(),
-			displayName: Joi.string().max(100).required()
-		};
+		// Validation
+		const { error } = validateUser(req.body);
 
-		// Return result.
-		const result = Joi.validate(req.body, schema);
-
-		if (result.error) {
+		if (error) {
 			// 400 Bad Request
-			res.status(400).send(result.error.details[0].message);
+			res.status(400).send(error.details[0].message);
 			return;
 		}
 
@@ -80,4 +75,14 @@ module.exports = app => {
 
 		res.send(id);
 	});
+
+	function validateUser(user) {
+		const schema = {
+			email: Joi.string().email({ minDomainAtoms: 2 }).required(),
+			displayName: Joi.string().max(100).required()
+		};
+
+		// Return result.
+		return Joi.validate(user, schema);
+	}
 };
