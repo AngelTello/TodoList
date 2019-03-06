@@ -55,7 +55,7 @@ class TodoList extends Component {
 												</Button>
 											</Table.Cell>
 											<Table.Cell textAlign="center">
-												<Button icon>
+												<Button icon color='red'>
 													<Icon
 														name="delete"
 														onClick={() =>

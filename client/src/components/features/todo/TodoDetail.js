@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
 	Grid,
 	Segment,
@@ -18,13 +19,13 @@ class TodoDetail extends Component {
 		const { id } = this.props.match.params;
 
 		this.props.fetchTodo(id);
-    }
-    
-    toggleTask = (taskid, status) => {
-        const todoId = this.props.todo._id;
-        
-        this.props.toggleTodoTask(todoId, taskid, status);
-    }
+	}
+
+	toggleTask = (taskid, status) => {
+		const todoId = this.props.todo._id;
+
+		this.props.toggleTodoTask(todoId, taskid, status);
+	};
 
 	render() {
 		if (this.props.todo && this.props.todo.items) {
@@ -64,14 +65,25 @@ class TodoDetail extends Component {
 													<List.Content floated="right">
 														<Button
 															toggle
-															active={(item.dateDone === null) ? false : true}
-                                                            onClick={() => this.toggleTask(item._id, (item.dateDone === null) ? true : false)}
-                                                            size="small"
-                                                            icon
-                                                            labelPosition='right'
+															active={item.dateDone === null ? false : true}
+															onClick={() =>
+																this.toggleTask(
+																	item._id,
+																	item.dateDone === null ? true : false
+																)
+															}
+															size="small"
+															icon
+															labelPosition="right"
 														>
-                                                            <Icon name={(item.dateDone === null) ?  'square outline' : 'check square'} />
-															{(item.dateDone === null) ?  'Pending...' : 'Done!'}
+															<Icon
+																name={
+																	item.dateDone === null
+																		? 'square outline'
+																		: 'check square'
+																}
+															/>
+															{item.dateDone === null ? 'Pending...' : 'Done!'}
 														</Button>
 													</List.Content>
 													<List.Icon name="angle right" />
@@ -86,6 +98,13 @@ class TodoDetail extends Component {
 										})}
 									</List>
 								)}
+								<br />
+								<Button animated color='yellow' as={Link} to="/todos">
+									<Button.Content visible>Back</Button.Content>
+									<Button.Content hidden>
+										<Icon name="arrow left" />
+									</Button.Content>
+								</Button>
 							</Segment>
 						</Grid.Column>
 					</Grid>

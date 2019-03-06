@@ -55,7 +55,7 @@ class UserList extends Component {
 											)}
 
 											{!user.isAdmin && (
-												<Button icon>
+												<Button icon color='red'>
 													<Icon
 														name="delete"
 														onClick={() =>

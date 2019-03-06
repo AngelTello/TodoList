@@ -79,7 +79,11 @@ class TodoForm extends Component {
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		initialValues: ownProps.todo
+		initialValues: {
+			title: (ownProps.todo) ? ownProps.todo.title : null,
+			description: (ownProps.todo) ? ownProps.todo.description : null,
+			dateDue: (ownProps.todo) ? ownProps.todo.dateDue : null
+		}
 	};
 };
 

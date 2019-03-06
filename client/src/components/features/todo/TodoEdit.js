@@ -27,7 +27,7 @@ class TodoEdit extends Component {
 
 		if (id) {
 			this.props.fetchTodo(id).then(() => {
-				// Grab data and format date
+				// Updating a property in the object: format date
 				var todo = { ...this.props.todo, dateDue: moment(this.props.todo.dateDue) };
 
 				// Store
