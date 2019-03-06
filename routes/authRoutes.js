@@ -1,29 +1,23 @@
+const express = require('express');
+const router = express.Router();
+
 const passport = require('passport');
 
-module.exports = app => {
-    app.get(
-        '/auth/google',
-        passport.authenticate('google', {
-            scope: ['profile', 'email']
-        })
-    );
+router.get(
+	'/',
+	passport.authenticate('google', {
+		scope: ['profile', 'email']
+	})
+);
 
-    // User will get authenticated using his Google account and then once thats done
-    // ... he will be redirected to our dashboard component '/surveys'
-	app.get(
-		'/auth/google/callback',
-		passport.authenticate('google', { failureRedirect: '/usernotvalid'}),
-		(req, res) => {
-			res.redirect('/home');
-		}
-    );
-    
-    app.get('/api/logout', (req, res) => {
-		req.logout();
-		res.redirect('/');
-	});
+// User will get authenticated using his Google account and then once thats done
+// ... he will be redirected to our dashboard component '/surveys'
+router.get(
+	'/callback',
+	passport.authenticate('google', { failureRedirect: '/usernotvalid' }),
+	(req, res) => {
+		res.redirect('/home');
+	}
+);
 
-	app.get('/api/current_user', (req, res) => {
-		res.send(req.user);
-	});
-};
+module.exports = router;

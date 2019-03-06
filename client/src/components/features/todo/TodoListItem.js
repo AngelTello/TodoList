@@ -31,7 +31,7 @@ class TodoListItem extends Component {
 									<Table.Cell>{item.title}</Table.Cell>
 									<Table.Cell>{item.description}</Table.Cell>
 									<Table.Cell textAlign="center">
-										<Button icon>
+										<Button icon color='red'>
 											<Icon name="delete" />
 										</Button>
 									</Table.Cell>

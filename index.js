@@ -4,7 +4,8 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const bodyParser = require('body-parser');
 
-// Import our google keys
+// Import our key configurations
+//
 const keys = require('./config/keys');
 
 // Implement our Mongoose Models
@@ -20,6 +21,13 @@ mongoose.connect(keys.mongoURI);
 
 const app = express();
 
+// Import routes
+//
+const authRoutes = require('./routes/authRoutes');
+const sessionRoutes = require('./routes/sessionRoutes');
+const userRoutes = require('./routes/userRoutes');
+const todoRoutes = require('./routes/todoRoutes');
+
 // Section used to Wireup our app Middlewares
 //
 app.use(bodyParser.json());
@@ -32,11 +40,11 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
-// Import and execute returned function from authRoutes passing as parameter app
-require('./routes/authRoutes')(app);
-require('./routes/todoRoutes')(app);
-require('./routes/userRoutes')(app);
+// ...then
+app.use('/auth/google', authRoutes);
+app.use('/session', sessionRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/todos', todoRoutes);
 
 if (process.env.NODE_ENV === 'production') {
 	// Express will serve up production assets

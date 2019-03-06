@@ -20,7 +20,7 @@ const SignedInMenu = ({ auth, openModal }) => {
 						icon="external"
 						onClick={() => openModal('TestModal')}
 					/>
-					<Dropdown.Item text="Sign Out" icon="power" href="/api/logout" />
+					<Dropdown.Item text="Sign Out" icon="power" href="/session/logout" />
 				</Dropdown.Menu>
 			</Dropdown>
 		</Menu.Item>
