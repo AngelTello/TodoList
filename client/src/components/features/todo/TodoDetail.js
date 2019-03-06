@@ -9,10 +9,13 @@ import {
 	List,
 	Icon,
 	Label,
-	Button
+	Button,
+	Menu,
+	Dropdown
 } from 'semantic-ui-react';
 import format from 'date-fns/format';
 import { fetchTodo, toggleTodoTask } from '../../../actions';
+import LoadingComponent from '../../LoadingComponent';
 
 class TodoDetail extends Component {
 	componentDidMount() {
@@ -29,12 +32,33 @@ class TodoDetail extends Component {
 
 	render() {
 		if (this.props.todo && this.props.todo.items) {
-			const { title, description, dateDue, items } = this.props.todo;
+			const { _id, title, description, dateDue, items } = this.props.todo;
 
 			return (
 				<div>
 					<Grid>
 						<Grid.Column width={12}>
+							<Menu attached="top">
+								<Dropdown item icon="wrench" simple>
+									<Dropdown.Menu>
+										<Dropdown.Item>
+											<Icon name="dropdown" />
+											<span className="text">New</span>
+											<Dropdown.Menu>
+												<Dropdown.Item as={Link} to="/todo/new">
+													Todo
+												</Dropdown.Item>
+											</Dropdown.Menu>
+										</Dropdown.Item>
+										<Dropdown.Item as={Link} to={`/todo/edit/${_id}`}>
+											Edit
+										</Dropdown.Item>
+										<Dropdown.Divider />
+										<Dropdown.Header>Export</Dropdown.Header>
+										<Dropdown.Item disabled>Share</Dropdown.Item>
+									</Dropdown.Menu>
+								</Dropdown>
+							</Menu>
 							<Segment>
 								<Label as="a" color="green" ribbon="right">
 									<Icon name="checked calendar" />{' '}
@@ -99,7 +123,7 @@ class TodoDetail extends Component {
 									</List>
 								)}
 								<br />
-								<Button animated color='yellow' as={Link} to="/todos">
+								<Button animated color="yellow" as={Link} to="/todos">
 									<Button.Content visible>Back</Button.Content>
 									<Button.Content hidden>
 										<Icon name="arrow left" />
@@ -112,7 +136,7 @@ class TodoDetail extends Component {
 			);
 		}
 
-		return <div>Loading...</div>;
+		return <LoadingComponent inverted={false} />;
 	}
 }
 
