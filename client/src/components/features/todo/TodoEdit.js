@@ -7,8 +7,7 @@ import TodoEditReview from './TodoEditReview';
 import TodoListItem from './TodoListItem';
 import TodoListItemSidebarOptions from './TodoListItemSidebarOptions';
 import { toastr } from 'react-redux-toastr';
-import { addTodo, fetchTodo } from '../../../actions';
-import moment from 'moment';
+import { addTodo, updateTodo, fetchTodo } from '../../../actions';
 
 class TodoEdit extends Component {
 	state = {
@@ -19,16 +18,23 @@ class TodoEdit extends Component {
 			{ name: 'review', active: false, disabled: true }
 		],
 		activeTabItem: 'todo',
-		activeContentOptionAction: null
+		activeContentOptionAction: null,
+		isNewRecord: true
 	};
 
 	componentDidMount() {
 		const { id } = this.props.match.params;
 
 		if (id) {
+			// Set wizard flow for EDIT a record
+			this.setState({ isNewRecord: false });
+
 			this.props.fetchTodo(id).then(() => {
-				// Updating a property in the object: format date
-				var todo = { ...this.props.todo, dateDue: moment(this.props.todo.dateDue) };
+
+				// I will only take those fieds the user can update
+				const { _id, title, description, items, dateCreated, dateDue, _user } = this.props.todo;
+
+				const todo = { _id, title, description, items, dateCreated, dateDue, _user };
 
 				// Store
 				this.setState({ todo });
@@ -61,10 +67,17 @@ class TodoEdit extends Component {
 		this.setState({ activeContentOptionAction: action });
 
 	storeTodoFormValuesAndContinue = values => {
-		const todo = { ...values, items: [] };
+		if (this.state.isNewRecord) {
+			const todo = { ...values, items: [] };
 
-		// Store
-		this.setState({ todo });
+			// Store
+			this.setState({ todo });
+		} else {
+			const todo = Object.assign(this.state.todo, values);
+
+			// Store
+			this.setState({ todo });
+		}
 
 		// Continue
 		const nextTabItem = 'tasks';
@@ -98,14 +111,14 @@ class TodoEdit extends Component {
 	};
 
 	submitTodo = () => {
-		const { id } = this.props.match.params;
-
-		if (id) {
-			// EDIT record
-			console.log('Edit record:', this.state.todo);
-		} else {
+		if (this.state.isNewRecord) {
 			// NEW record
 			this.props.addTodo(this.state.todo);
+		} else {
+			const { id } = this.props.match.params;
+
+			// EDIT record
+			this.props.updateTodo(id, this.state.todo);
 		}
 	};
 
@@ -214,6 +227,7 @@ const mapStateToProps = state => {
 
 const actions = {
 	addTodo,
+	updateTodo,
 	fetchTodo
 };
 

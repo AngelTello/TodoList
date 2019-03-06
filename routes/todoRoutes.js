@@ -35,7 +35,7 @@ router.post('/', requireLogin, async (req, res) => {
 
 	if (error) {
 		// 400 Bad Request
-		return res.status(400).send(result.error.details[0].message);
+		return res.status(400).send(error.details[0].message);
 	}
 
 	const todo = await new Todo({
@@ -77,6 +77,64 @@ router.get('/:id/:taskId/:status', async (req, res) => {
 	);
 });
 
+// // PUT updates a todo
+// //
+// router.put('/', requireLogin, async (req, res) => {
+
+// 	// Validation
+// 	const { error } = validateTodo(req.body);
+
+// 	if (error) {
+// 		// 400 Bad Request
+// 		return res.status(400).send(error.details[0].message);
+// 	}
+
+// 	const { _id } = req.body;
+
+// 	// // Update
+// 	await Todo.findOneAndUpdate({ _id }, req.body, { upsert: true }, function(
+// 		err,
+// 		doc
+// 	) {
+// 		if (err) return res.send(500, { error: err });
+
+// 		return res.send('succesfully saved');
+// 	});
+// });
+
+// PUT updates a todo
+//
+router.put('/:id', requireLogin, async (req, res) => {
+	const { id } = req.params;
+
+	// Validation
+	const { error } = validateTodo(req.body);
+
+	if (error) {
+		// 400 Bad Request
+		return res.status(400).send(error.details[0].message);
+	}
+
+	Todo.findById(id)
+		.then(doc => {
+			const todo = Object.assign(doc, req.body);
+
+			return todo;
+		})
+		.then(todo => {
+			return todo.save();
+		})
+		.then(todoUpdated => {
+			res.json({
+				msg: 'ToDo document updated',
+				todoUpdated
+			});
+		})
+		.catch(err => {
+			res.send(err);
+		});
+});
+
 // GET deletes a todo
 //
 router.get('/:id/delete', requireLogin, async (req, res) => {
@@ -95,13 +153,16 @@ router.get('/:id/delete', requireLogin, async (req, res) => {
 
 function validateTodo(todo) {
 	const todoListItem = {
+		_id: Joi.string().optional(),
 		title: Joi.string()
 			.max(50)
 			.required(),
-		description: Joi.string().max(255)
+		description: Joi.string().max(255),
+		dateDone: Joi.date().allow(null)
 	};
 
 	const todoSchema = {
+		_id: Joi.string().optional(),
 		title: Joi.string()
 			.max(50)
 			.required(),
@@ -109,7 +170,9 @@ function validateTodo(todo) {
 		items: Joi.array()
 			.items(todoListItem)
 			.unique(),
-		dateDue: Joi.date().required()
+		dateCreated: Joi.date().optional(),
+		dateDue: Joi.date().required(),
+		_user: Joi.string().optional()
 	};
 
 	// Return result.

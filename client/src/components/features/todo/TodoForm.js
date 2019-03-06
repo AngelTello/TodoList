@@ -82,7 +82,7 @@ const mapStateToProps = (state, ownProps) => {
 		initialValues: {
 			title: (ownProps.todo) ? ownProps.todo.title : null,
 			description: (ownProps.todo) ? ownProps.todo.description : null,
-			dateDue: (ownProps.todo) ? ownProps.todo.dateDue : null
+			dateDue: (ownProps.todo) ? moment(ownProps.todo.dateDue) : null // Updating a property in the object: format date
 		}
 	};
 };

@@ -73,6 +73,18 @@ export const addTodo = values => async dispatch => {
 	}
 };
 
+export const updateTodo = (id, values) => async dispatch => {
+	try {
+		await axios.put(`/api/todos/${id}`, values);
+
+		toastr.success('Success!', 'ToDo updated');
+
+		history.push('/todos'); // Implementing programmatic navigation
+	} catch (error) {
+		toastr.error('Oops', 'Something went wrong');
+	}
+};
+
 export const deleteTodo = id => async dispatch => {
 	try {
 		const res = await axios.get(`/api/todos/${id}/delete`);
