@@ -25,8 +25,7 @@ module.exports = app => {
 
 		if (error) {
 			// 400 Bad Request
-			res.status(400).send(error.details[0].message);
-			return;
+			return res.status(400).send(error.details[0].message);
 		}
 
 		const { email, displayName } = req.body;
@@ -35,10 +34,9 @@ module.exports = app => {
 		const existingUser = await User.findOne({ email });
 
 		if (existingUser) {
-			res.status(400).send({
+			return res.status(400).send({
 				message: 'User e-mail already exists'
 			});
-			return;
 		}
 
 		const user = await new User({
@@ -57,7 +55,7 @@ module.exports = app => {
 		// Deletes Todo's User
 		await Todo.deleteMany({ _user: id }, error => {
 			if (error) {
-				res.status(400).send({
+				return res.status(400).send({
 					message: "Problem trying to delete user todo's"
 				});
 			}
@@ -67,7 +65,7 @@ module.exports = app => {
 		await User.deleteOne({ _id: id }),
 			error => {
 				if (error) {
-					res.status(400).send({
+					return res.status(400).send({
 						message: 'Problem trying to delete user'
 					});
 				}

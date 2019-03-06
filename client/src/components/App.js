@@ -60,6 +60,12 @@ class App extends Component {
 												)}
 											/>
 											<Route
+												path="/todo/edit/:id"
+												component={userIsAuthenticatedRedir(
+													withRouter(TodoEdit)
+												)}
+											/>
+											<Route
 												path="/todo/:id"
 												component={userIsAuthenticatedRedir(TodoDetail)}
 											/>

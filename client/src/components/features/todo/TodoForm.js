@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { reduxForm, Field } from 'redux-form';
 import { withRouter } from 'react-router-dom';
 import { Form, Button } from 'semantic-ui-react';
@@ -76,9 +77,19 @@ class TodoForm extends Component {
 	}
 }
 
-export default reduxForm({
-	form: 'todoForm',
-	enableReinitialize: true,
-	destroyOnUnmount: false,
-	validate
-})(withRouter(TodoForm));
+const mapStateToProps = (state, ownProps) => {
+	return {
+		initialValues: ownProps.todo
+	};
+};
+
+export default connect(
+	mapStateToProps
+)(
+	reduxForm({
+		form: 'todoForm',
+		enableReinitialize: true,
+		destroyOnUnmount: false,
+		validate
+	})(withRouter(TodoForm))
+);

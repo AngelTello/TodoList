@@ -28,14 +28,13 @@ module.exports = app => {
 	// POST Add todo
 	//
 	app.post('/api/todos', requireLogin, async (req, res) => {
-		
+
 		// Validation
 		const { error } = validateTodo(req.body);
 
-		if (result.error) {
+		if (error) {
 			// 400 Bad Request
-			res.status(400).send(result.error.details[0].message);
-			return;
+			return res.status(400).send(result.error.details[0].message);
 		}
 
 		const todo = await new Todo({
@@ -67,7 +66,7 @@ module.exports = app => {
 			{ new: true }, // new: bool - if true, return the modified document rather than the original. defaults to false
 			(error, todo) => {
 				if (error) {
-					res.status(400).send({
+					return res.status(400).send({
 						message: 'ToDo not found'
 					});
 				}
@@ -84,7 +83,7 @@ module.exports = app => {
 
 		await Todo.deleteOne({ _id: id, _user: req.user.id }, error => {
 			if (error) {
-				res.status(400).send({
+				return res.status(400).send({
 					message: 'ToDo not found'
 				});
 			}

@@ -7,7 +7,8 @@ import TodoEditReview from './TodoEditReview';
 import TodoListItem from './TodoListItem';
 import TodoListItemSidebarOptions from './TodoListItemSidebarOptions';
 import { toastr } from 'react-redux-toastr';
-import { addTodo } from '../../../actions';
+import { addTodo, fetchTodo } from '../../../actions';
+import moment from 'moment';
 
 class TodoEdit extends Component {
 	state = {
@@ -20,6 +21,24 @@ class TodoEdit extends Component {
 		activeTabItem: 'todo',
 		activeContentOptionAction: null
 	};
+
+	componentDidMount() {
+		const { id } = this.props.match.params;
+
+		if (id) {
+			this.props.fetchTodo(id).then(() => {
+				// Grab data and format date
+				var todo = { ...this.props.todo, dateDue: moment(this.props.todo.dateDue) };
+
+				// Store
+				this.setState({ todo });
+
+				// Enable tabs
+				this.enableTabItem('tasks');
+				this.enableTabItem('review');
+			});
+		}
+	}
 
 	handleTabItemClick = (e, { name }) => this.setActiveTabItem(name);
 	setActiveTabItem = name => {
@@ -58,7 +77,7 @@ class TodoEdit extends Component {
 		// Adding an element to and array
 		var items = [...this.state.todo.items, values];
 
-		// Opdating a property in the object
+		// Updating a property in the object
 		var todo = { ...this.state.todo, items: items };
 
 		// Store
@@ -79,7 +98,15 @@ class TodoEdit extends Component {
 	};
 
 	submitTodo = () => {
-		this.props.addTodo(this.state.todo);
+		const { id } = this.props.match.params;
+
+		if (id) {
+			// EDIT record
+			console.log('Edit record:', this.state.todo);
+		} else {
+			// NEW record
+			this.props.addTodo(this.state.todo);
+		}
 	};
 
 	onCancelProcess = () => {
@@ -118,6 +145,7 @@ class TodoEdit extends Component {
 			default:
 				return (
 					<TodoForm
+						todo={this.state.todo}
 						onSubmit={this.storeTodoFormValuesAndContinue}
 						onCancel={this.onCancelProcess}
 					/>
@@ -178,12 +206,19 @@ class TodoEdit extends Component {
 	}
 }
 
+const mapStateToProps = state => {
+	return {
+		todo: state.todos
+	};
+};
+
 const actions = {
-	addTodo
+	addTodo,
+	fetchTodo
 };
 
 export default connect(
-	null,
+	mapStateToProps,
 	actions
 )(
 	reduxForm({

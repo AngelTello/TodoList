@@ -31,35 +31,49 @@ class TodoList extends Component {
 								<Table.HeaderCell>Title</Table.HeaderCell>
 								<Table.HeaderCell>Description</Table.HeaderCell>
 								<Table.HeaderCell>Due</Table.HeaderCell>
+								<Table.HeaderCell textAlign="center">Edit</Table.HeaderCell>
 								<Table.HeaderCell textAlign="center">Delete</Table.HeaderCell>
 							</Table.Row>
 						</Table.Header>
-
 						<Table.Body>
-							{this.props.todos.map((todo, index) => {
-								return (
-									<Table.Row key={index}>
-										<Table.Cell>
-											<Link to={`/todo/${todo._id}`}>{todo.title}</Link>
-										</Table.Cell>
-										<Table.Cell>{todo.description}</Table.Cell>
-										<Table.Cell>
-											{format(todo.dateDue, 'dddd Do MMM')} at{' '}
-											{format(todo.dateDue, 'h:mm A')}
-										</Table.Cell>
-										<Table.Cell textAlign="center">
-											<Button icon>
-												<Icon
-													name="delete"
-													onClick={() =>
-														this.confirmRecordDelete(todo._id, todo.title)
-													}
-												/>
-											</Button>
-										</Table.Cell>
-									</Table.Row>
-								);
-							})}
+							{this.props.todos &&
+								this.props.todos.length > 0 &&
+								this.props.todos.map((todo, index) => {
+									return (
+										<Table.Row key={index}>
+											<Table.Cell>
+												<Link to={`/todo/${todo._id}`}>{todo.title}</Link>
+											</Table.Cell>
+											<Table.Cell>{todo.description}</Table.Cell>
+											<Table.Cell>
+												{format(todo.dateDue, 'dddd Do MMM')} at{' '}
+												{format(todo.dateDue, 'h:mm A')}
+											</Table.Cell>
+											<Table.Cell textAlign="center">
+												<Button icon as={Link} to={`/todo/edit/${todo._id}`}>
+													<Icon name="edit" />
+												</Button>
+											</Table.Cell>
+											<Table.Cell textAlign="center">
+												<Button icon>
+													<Icon
+														name="delete"
+														onClick={() =>
+															this.confirmRecordDelete(todo._id, todo.title)
+														}
+													/>
+												</Button>
+											</Table.Cell>
+										</Table.Row>
+									);
+								})}
+							{this.props.todos.length === 0 && (
+								<Table.Row>
+									<Table.Cell colSpan="5" textAlign="center">
+										No records found
+									</Table.Cell>
+								</Table.Row>
+							)}
 						</Table.Body>
 					</Table>
 				</Segment>

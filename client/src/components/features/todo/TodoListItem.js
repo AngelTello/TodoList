@@ -26,7 +26,7 @@ class TodoListItem extends Component {
 							</Table.Row>
 						</Table.Header>
 						<Table.Body>
-							{items.map((item, index) => (
+							{items.length > 0 && items.map((item, index) => (
 								<Table.Row key={index}>
 									<Table.Cell>{item.title}</Table.Cell>
 									<Table.Cell>{item.description}</Table.Cell>
@@ -37,6 +37,13 @@ class TodoListItem extends Component {
 									</Table.Cell>
 								</Table.Row>
 							))}
+							{items.length === 0 && (
+								<Table.Row>
+									<Table.Cell colSpan="34" textAlign="center">
+										No tasks added
+									</Table.Cell>
+								</Table.Row>
+							)}
 						</Table.Body>
 					</Table>
 				</Grid.Column>
