@@ -11,14 +11,15 @@
 		"start": "node index.js",
 		"server": "nodemon index.js",
 		"client": "npm run start --prefix client",
-		"dev": "concurrently \"npm run server\" \"npm run client\""
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
 	},
 	"keywords": [
 		"ToDo",
 		"List",
 		"Task"
 	],
-	"author": "Angel Tello.",
+	"author": "Angel Tello",
 	"license": "ISC",
 	"dependencies": {
 		"body-parser": "^1.18.3",
