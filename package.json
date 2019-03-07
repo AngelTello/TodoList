@@ -18,7 +18,7 @@
 		"List",
 		"Task"
 	],
-	"author": "Angel Tello",
+	"author": "Angel Tello.",
 	"license": "ISC",
 	"dependencies": {
 		"body-parser": "^1.18.3",
