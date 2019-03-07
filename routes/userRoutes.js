@@ -22,14 +22,14 @@ router.get('/', requireLogin, async (req, res) => {
 //
 router.post('/', requireLogin, async (req, res) => {
 	// Validation
-	const { error } = validateUser(req.body);
+	const { error, value } = validateUser(req.body);
 
 	if (error) {
 		// 400 Bad Request
 		return res.status(400).send(error.details[0].message);
 	}
 
-	const { email, displayName } = req.body;
+	const { email, displayName } = value;
 
 	// First check if we already have a user with that e-mail
 	const existingUser = await User.findOne({ email });

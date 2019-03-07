@@ -31,7 +31,7 @@ router.get('/:id', requireLogin, async (req, res) => {
 //
 router.post('/', requireLogin, async (req, res) => {
 	// Validation
-	const { error } = validateTodo(req.body);
+	const { error, value } = validateTodo(req.body);
 
 	if (error) {
 		// 400 Bad Request
@@ -39,7 +39,7 @@ router.post('/', requireLogin, async (req, res) => {
 	}
 
 	const todo = await new Todo({
-		...req.body,
+		value,
 		_user: req.user.id
 	}).save();
 
@@ -77,38 +77,13 @@ router.get('/:id/:taskId/:status', async (req, res) => {
 	);
 });
 
-// // PUT updates a todo
-// //
-// router.put('/', requireLogin, async (req, res) => {
-
-// 	// Validation
-// 	const { error } = validateTodo(req.body);
-
-// 	if (error) {
-// 		// 400 Bad Request
-// 		return res.status(400).send(error.details[0].message);
-// 	}
-
-// 	const { _id } = req.body;
-
-// 	// // Update
-// 	await Todo.findOneAndUpdate({ _id }, req.body, { upsert: true }, function(
-// 		err,
-// 		doc
-// 	) {
-// 		if (err) return res.send(500, { error: err });
-
-// 		return res.send('succesfully saved');
-// 	});
-// });
-
 // PUT updates a todo
 //
 router.put('/:id', requireLogin, async (req, res) => {
 	const { id } = req.params;
 
 	// Validation
-	const { error } = validateTodo(req.body);
+	const { error, value } = validateTodo(req.body);
 
 	if (error) {
 		// 400 Bad Request
@@ -117,7 +92,7 @@ router.put('/:id', requireLogin, async (req, res) => {
 
 	Todo.findById(id)
 		.then(doc => {
-			const todo = Object.assign(doc, req.body);
+			const todo = Object.assign(doc, value);
 
 			return todo;
 		})
