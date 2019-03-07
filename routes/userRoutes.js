@@ -11,7 +11,7 @@ const Todo = mongoose.model('todos');
 // GET all users
 //
 router.get('/', requireLogin, async (req, res) => {
-	await User.find({}, '_id displayName email isAdmin', {
+	await User.find({}, '_id displayName email isAdmin dateCreated dateActivated', {
 		sort: { _id: 1, displayName: 1 }
 	}).then(function(users) {
 		res.send(users);

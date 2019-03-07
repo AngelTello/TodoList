@@ -19,7 +19,7 @@ class TodoEdit extends Component {
 		],
 		activeTabItem: 'todo',
 		activeContentOptionAction: null,
-		isNewRecord: true
+		todoId: ''
 	};
 
 	componentDidMount() {
@@ -27,7 +27,7 @@ class TodoEdit extends Component {
 
 		if (id) {
 			// Set wizard flow for EDIT a record
-			this.setState({ isNewRecord: false });
+			this.setState({ todoId: id });
 
 			this.props.fetchTodo(id).then(() => {
 
@@ -67,13 +67,15 @@ class TodoEdit extends Component {
 		this.setState({ activeContentOptionAction: action });
 
 	storeTodoFormValuesAndContinue = values => {
-		if (this.state.isNewRecord) {
-			const todo = { ...values, items: [] };
+		if (this.state.todoId !== '') {
+			// Editing existing document
+			const todo = Object.assign(this.state.todo, values);
 
 			// Store
 			this.setState({ todo });
 		} else {
-			const todo = Object.assign(this.state.todo, values);
+			// New document
+			const todo = { ...values, items: [] };
 
 			// Store
 			this.setState({ todo });
@@ -111,14 +113,12 @@ class TodoEdit extends Component {
 	};
 
 	submitTodo = () => {
-		if (this.state.isNewRecord) {
+		if (this.state.todoId !== '') {
+			// EDIT record
+			this.props.updateTodo(this.state.todoId, this.state.todo);
+		} else {
 			// NEW record
 			this.props.addTodo(this.state.todo);
-		} else {
-			const { id } = this.props.match.params;
-
-			// EDIT record
-			this.props.updateTodo(id, this.state.todo);
 		}
 	};
 

@@ -10,6 +10,7 @@ import {
 	Icon,
 	Label
 } from 'semantic-ui-react';
+import format from 'date-fns/format';
 import { toastr } from 'react-redux-toastr';
 
 class UserList extends Component {
@@ -36,6 +37,8 @@ class UserList extends Component {
 							<Table.Row>
 								<Table.HeaderCell>Display Name</Table.HeaderCell>
 								<Table.HeaderCell>E-Mail</Table.HeaderCell>
+								<Table.HeaderCell>Created</Table.HeaderCell>
+								<Table.HeaderCell>Activated</Table.HeaderCell>
 								<Table.HeaderCell textAlign="center">Delete</Table.HeaderCell>
 							</Table.Row>
 						</Table.Header>
@@ -47,6 +50,14 @@ class UserList extends Component {
 									<Table.Row key={index}>
 										<Table.Cell>{user.displayName}</Table.Cell>
 										<Table.Cell>{user.email}</Table.Cell>
+										<Table.Cell>
+											{format(user.dateCreated, 'dddd Do MMM')}
+										</Table.Cell>
+										<Table.Cell>
+											{user.dateActivated
+												? format(user.dateActivated, 'dddd Do MMM')
+												: ''}
+										</Table.Cell>
 										<Table.Cell textAlign={user.isAdmin ? 'left' : 'center'}>
 											{user.isAdmin && (
 												<Label color="green" ribbon="right">
@@ -55,7 +66,7 @@ class UserList extends Component {
 											)}
 
 											{!user.isAdmin && (
-												<Button icon color='red'>
+												<Button icon color="red">
 													<Icon
 														name="delete"
 														onClick={() =>
@@ -69,7 +80,7 @@ class UserList extends Component {
 								))}
 							{this.props.users.length === 0 && (
 								<Table.Row>
-									<Table.Cell colSpan="4" textAlign="center">
+									<Table.Cell colSpan="2" textAlign="center">
 										No records found
 									</Table.Cell>
 								</Table.Row>
