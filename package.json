@@ -1,7 +1,7 @@
 {
 	"name": "server",
 	"version": "1.0.0",
-	"description": "My Todo List Fullstack App using NodeJs And React with MongoDB",
+	"description": "ToDo List - Fullstack App using NodeJS with Express And React with MongoDB",
 	"main": "index.js",
 	"engines": {
 		"node": "8.1.1",
