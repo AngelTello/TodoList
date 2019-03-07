@@ -38,8 +38,13 @@ router.post('/', requireLogin, async (req, res) => {
 		return res.status(400).send(error.details[0].message);
 	}
 
+	const { title, description, dateDue, items } = value;
+
 	const todo = await new Todo({
-		value,
+		title,
+		description,
+		dateDue,
+		items,
 		_user: req.user.id
 	}).save();
 
