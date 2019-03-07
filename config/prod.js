@@ -5,5 +5,4 @@ module.exports = {
     mongoURI: process.env.MONGO_URI,
     cookieKey: process.env.COOKIE_KEY,
     adminUserEmail: process.env.ADMIN_USER_EMAIL
-    // redirectDomain: process.env.REDIRECT_DOMAIN
 };
