@@ -1,7 +1,7 @@
 # TodoList
 Fullstack web app with NodeJS, React, Redux, Express, and MongoDB
 
-## Instalation
+## npm modules required
 use: npm install
 
 ## Run application
